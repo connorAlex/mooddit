@@ -14,6 +14,8 @@ The website will display rankings of positive / negative communities. If a user 
 
 ### Technical Methodology
 
+
+
 #### Web Layer
 
 #### SQL
