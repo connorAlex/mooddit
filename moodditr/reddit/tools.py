@@ -2,33 +2,23 @@ import praw
 from praw.models import MoreComments
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
-#//////////////////////////////////////////////////////////////////////
-# Lookup will be the only function called by __init__.py.
-# Other functions are decoupled for debugging and readability purposes.
-#//////////////////////////////////////////////////////////////////////
-
-
-# Create read-only instance of reddit
 reddit = praw.Reddit("mooddit", user_agent = "mooddit user agent")
 reddit.read_only = True
-
-# create VADER instance
 analyzer = SentimentIntensityAnalyzer()
 
-def lookup(input, type):
-    text = []
+def get_user(user):
+    comments = []
 
-    # determine what search to conduct
-    if type == "subreddit":
-        text = get_subreddit(input)
-        
-    elif type == "user":
-        text = get_user(input)
+    # Get user using redditor() method
+    redditor = reddit.redditor(user)
 
-    # get sentiment of data
-    return get_sentiment(text)
+    # Get all comments user has posted
 
-# Returns a list type
+    for item in redditor.comments.new(limit=None):
+        comments.append(item.body)
+    
+    return comments
+
 def get_subreddit(sub):
     
     top_comments = []
@@ -50,21 +40,6 @@ def get_subreddit(sub):
 
     return top_comments
 
-# Returns a list type
-def get_user(user):
-    comments = []
-
-    # Get user using redditor() method
-    redditor = reddit.redditor(user)
-
-    # Get all comments user has posted
-
-    for item in redditor.comments.new(limit=None):
-        comments.append(item.body)
-    
-    return comments
-
-# Returns float type
 def get_sentiment(text):
     score = {
         'pos':0,
@@ -99,4 +74,3 @@ def get_sentiment(text):
     score['neg'] /= num_comments
 
     return score
-

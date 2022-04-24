@@ -1,6 +1,7 @@
 import os
+from flask import Flask, render_template
+from reddit.lookup import reddit_lookup
 
-from flask import Flask
 
 def create_app(test_config=None):
     # create and configure the app
@@ -27,8 +28,13 @@ def create_app(test_config=None):
         pass
 
     # helloworld page
-    @app.route('/helloworld')
-    def hello():
-        return 'Hello world'
     
+    
+    @app.route('/')
+    def hello():
+        
+        return render_template("base.html")
+    
+    from . import db
+    db.init_app(app)
     return app
