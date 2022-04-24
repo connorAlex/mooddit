@@ -1,16 +1,21 @@
 import praw
 from praw.models import MoreComments
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
-import time
-start_time = time.time()
+
+#//////////////////////////////////////////////////////////////////////
+# Lookup will be the only function called by __init__.py.
+# Other functions are decoupled for debugging and readability purposes.
+#//////////////////////////////////////////////////////////////////////
+
 
 # Create read-only instance of reddit
 reddit = praw.Reddit("mooddit", user_agent = "mooddit user agent")
 reddit.read_only = True
+
+# create VADER instance
 analyzer = SentimentIntensityAnalyzer()
 
 def lookup(input, type):
-
     text = []
 
     # determine what search to conduct
@@ -21,8 +26,6 @@ def lookup(input, type):
         text = get_user(input)
 
     # get sentiment of data
-    
-        
     return get_sentiment(text)
 
 # Returns a list type
@@ -30,14 +33,11 @@ def get_subreddit(sub):
     
     top_comments = []
 
-    
     # Get subreddit from param
     subreddit = reddit.subreddit(sub)
     
     # Loop through submissions, 25 posts in the front page
-    for submission in subreddit.hot(limit = 25):
-
-        
+    for submission in subreddit.top("month", limit=25):
 
         # Loop through all the comments in the submission
         for item in submission.comments.list():
@@ -46,10 +46,8 @@ def get_subreddit(sub):
                 continue
 
             # Append the comment to the top_comments list
-            top_comments.append(item)
+            top_comments.append(item.body)
 
-            
-    print(top_comments)
     return top_comments
 
 # Returns a list type
@@ -63,14 +61,21 @@ def get_user(user):
 
     for item in redditor.comments.new(limit=None):
         comments.append(item.body)
-        
+    
     return comments
 
 # Returns float type
 def get_sentiment(text):
-    score = 0.0
-    num_comments = len(text)
+    score = {
+        'pos':0,
+        'neu':0,
+        'neg':0,
+        'compound':0
+    }
 
+    num_comments = len(text)
+    
+    
     # Loop through text, get polarity score
     for item in text:
         # get the vader score for the specific comment
@@ -78,18 +83,20 @@ def get_sentiment(text):
 
         # Check to see that vader actually performed an anlysis on the phrase
         if vs['pos'] != 0 and vs['compound'] != 0 and vs['neu'] != 0 and vs['neg'] != 0:
-            score += (vs['compound'])
+            score['compound'] += (vs['compound'])
+            score['pos'] += (vs['pos'])
+            score['neu'] += (vs['neu'])
+            score['neg'] += (vs['neg'])
+            
         else:
-
             # if it didn't add the score, we need to drop the average denom. by 1
             num_comments -= 1
-
+    
     # Avg the sentiment score
-    score /= num_comments
+    score['compound'] /= num_comments
+    score['pos'] /= num_comments
+    score['neu'] /= num_comments
+    score['neg'] /= num_comments
 
     return score
 
-
-
-print(lookup("walkaway", "subreddit"))
-print("--- %s seconds ---" % (time.time() - start_time))
