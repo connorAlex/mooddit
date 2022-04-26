@@ -6,6 +6,20 @@ reddit = praw.Reddit("mooddit", user_agent = "mooddit user agent")
 reddit.read_only = True
 analyzer = SentimentIntensityAnalyzer()
 
+
+def reddit_lookup(input, type):
+    text = []
+    # determine what search to conduct
+    if type == "subreddit":
+        text = get_subreddit(input)
+        
+    elif type == "user":
+        text = get_user(input)
+
+    # get sentiment of data
+    return get_sentiment(text)
+
+
 def get_user(user):
     comments = []
 
@@ -74,3 +88,4 @@ def get_sentiment(text):
     score['neg'] /= num_comments
 
     return score
+

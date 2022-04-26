@@ -1,12 +1,23 @@
 <!doctype html>
 <html>
-    <title>
-        Homepage
-    </title>
+    <title>{% block title %}{% endblock %}</title>
+
+    
     <body>
+        <h2>mooddit</h2>
+        
         <section>
-            <input type = "text" id = "user" placeholder = "user">
-            <button type = "submit">Submit</button>   
+            <p>
+                {% block description %}{% endblock %}
+            </p>
         </section>
+
+        <section>
+            {% block main %}{% endblock %}
+        </section>
+        
+        <footer>
+            data provided by <a href="https://www.reddit.com/user/me/">you</a>.
+        </footer>
     </body>
 </html>

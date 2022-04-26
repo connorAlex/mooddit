@@ -1,6 +1,6 @@
 import os
-from flask import Flask, render_template
-from reddit.lookup import reddit_lookup
+from flask import Flask, render_template, request
+from .lookup import reddit_lookup
 
 
 def create_app(test_config=None):
@@ -30,10 +30,15 @@ def create_app(test_config=None):
     # helloworld page
     
     
-    @app.route('/')
+    @app.route('/', methods = ["GET","POST"])
     def hello():
         
-        return render_template("base.html")
+        if request.method == "POST":
+            username = request.form.get("user")
+            print(username)
+            return render_template("test.html", username = username)
+        else:
+            return render_template("base.html")
     
     from . import db
     db.init_app(app)
