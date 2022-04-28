@@ -10,10 +10,10 @@ analyzer = SentimentIntensityAnalyzer()
 def reddit_lookup(input, type):
     text = []
     # determine what search to conduct
-    if type == "/r/":
+    if type == "subreddit":
         text = get_subreddit(input)
         
-    elif type == "/u/":
+    elif type == "user":
         text = get_user(input)
 
     # get sentiment of data
@@ -63,6 +63,7 @@ def get_sentiment(text):
     }
 
     num_comments = len(text)
+    print(num_comments)
     
     
     # Loop through text, get polarity score
@@ -72,20 +73,15 @@ def get_sentiment(text):
 
         # Check to see that vader actually performed an anlysis on the phrase
         if vs['pos'] != 0 and vs['compound'] != 0 and vs['neu'] != 0 and vs['neg'] != 0:
-            score['compound'] += (vs['compound'])
-            score['pos'] += (vs['pos'])
-            score['neu'] += (vs['neu'])
-            score['neg'] += (vs['neg'])
+            for item in score:
+                score[item] += vs[item]
             
         else:
             # if it didn't add the score, we need to drop the average denom. by 1
             num_comments -= 1
     
     # Avg the sentiment score
-    score['compound'] /= num_comments
-    score['pos'] /= num_comments
-    score['neu'] /= num_comments
-    score['neg'] /= num_comments
+    for item in score:
+        score[item] = round(score[item] / num_comments, 4)
 
     return score
-

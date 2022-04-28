@@ -32,7 +32,7 @@ def init_db():
 @click.command('init-db')
 @with_appcontext 
 def init_db_command():
-    # Clear the exisiting data and create new tables
+    
     init_db()
     click.echo('Initialized the database.')
 

@@ -3,20 +3,20 @@ DROP TABLE IF EXISTS subreddit;
 
 CREATE TABLE user (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    username TEXT UNIQUE NOT NULL,
-    pos FLOAT,
-    neg FLOAT,
-    NEU FLOAT,
-    compound FLOAT,
-    date_added DATETIME
-);
-
-CREATE TABLE subreddit (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    sub_name TEXT NOT NULL,
+    name TEXT UNIQUE NOT NULL,
     pos FLOAT,
     neg FLOAT,
     neu FLOAT,
     compound FLOAT,
-    date_added DATETIME
+    date_added TEXT
+);
+
+CREATE TABLE subreddit (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    pos FLOAT,
+    neg FLOAT,
+    neu FLOAT,
+    compound FLOAT,
+    date_added TEXT
 );

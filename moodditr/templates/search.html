@@ -5,3 +5,10 @@
 {% endblock %}
 
 
+{% block main %}
+<form action = "/search" method = "post">
+    <input name = "userinput" id = "userinput" type = "text" autofocus placeholder = "">
+    <button type = "submit">search</button>
+</form>
+<p>(i.e. /r/place or /u/unidan</p>
+{% endblock %}
