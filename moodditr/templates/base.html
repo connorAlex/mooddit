@@ -4,20 +4,21 @@
 
     
     <body>
-        <h2>mooddit</h2>
-        
+        <h1>mooddit</h1>
+        <h4>a reddit sentiment calculator</h4>
+        <form method = "post">
+            <input name = "userinput" id = "userinput" type = "text" autofocus placeholder = "">
+            <button type = "submit">search</button>
+        </form>
+        <p>(i.e. /r/place or /u/unidan</p>
         <section>
             <p>
                 {% block description %}{% endblock %}
             </p>
         </section>
-
-        <section>
-            {% block main %}{% endblock %}
-        </section>
         
-        <footer>
-            data provided by <a href="https://www.reddit.com/user/me/">you</a>.
-        </footer>
+        <section>
+            {% block results %}{% endblock %}
+        </section>
     </body>
 </html>

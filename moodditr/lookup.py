@@ -10,10 +10,10 @@ analyzer = SentimentIntensityAnalyzer()
 def reddit_lookup(input, type):
     text = []
     # determine what search to conduct
-    if type == "subreddit":
+    if type == "/r/":
         text = get_subreddit(input)
         
-    elif type == "user":
+    elif type == "/u/":
         text = get_user(input)
 
     # get sentiment of data

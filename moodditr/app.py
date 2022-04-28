@@ -1,5 +1,6 @@
+from cgitb import lookup
 import os
-from flask import Flask, render_template, request
+from flask import Flask, redirect, render_template, request
 from .lookup import reddit_lookup
 
 
@@ -31,15 +32,33 @@ def create_app(test_config=None):
     
     
     @app.route('/', methods = ["GET","POST"])
-    def hello():
-        
+    def index():
         if request.method == "POST":
-            username = request.form.get("user")
-            print(username)
-            return render_template("test.html", username = username)
+            # Get user input from form
+            userinput = request.form.get("userinput")
+            inp_type = userinput[:3]
+            inp_value = userinput[3:]
+            #check first 3 chars to determin if it's a user or a subreddit
+            if userinput[:3] != '/u/' and userinput[:3] != '/r/':
+                
+                return "first 3 chars incorrect"
+            
+            # call lookup function to get reddit sentiment data
+            # first 3 chars describe type, everything ekse is the search query
+            data = reddit_lookup(inp_value, inp_type)
+            print("data:",data)
+            #return results and display the reddit data
+            return render_template("results.html", data = data)
+
         else:
-            return render_template("base.html")
+            return render_template("home.html")
+   
     
     from . import db
     db.init_app(app)
+
+    @app.route('/results', methods = ['GET', 'POST'])
+    def results():
+        print("ASdfasdf")
+        return 0
     return app

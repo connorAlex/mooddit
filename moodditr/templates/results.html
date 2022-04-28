@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}
+    results
+{% endblock %}
+
+{% block results %}
+<ol>
+    <li>
+        Overall: {{data['compound']}}
+    </li>
+    <li>
+        Positive: {{data['pos']}}
+    </li>
+    <li>
+        Neutral: {{data['neu']}}
+    </li>
+    <li>
+        Negative: {{data['neg']}}
+    </li>
+</ol>
+
+
+{% endblock %}
