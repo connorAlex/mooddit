@@ -2,3 +2,26 @@
     width: 400px !important;
     margin-bottom: 10px;
 }
+.form-control:focus {
+    
+    border-color: #000000 !important;
+    box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, 0.25) !important;
+}
+label {
+    margin-bottom: 2px;
+}
+.mt-auto{
+    margin-top:100px !important;
+    background-color: #CCCCCC !important;
+}
+.row{
+    margin-top: 15px !important;
+}
+
+.div_table{
+    border-style: solid;
+    border-width: 2px;
+    border-color: black !important;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}

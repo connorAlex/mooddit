@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}
+    users
+{% endblock %}
+{% block title2 %}
+    users
+{% endblock %}
+
+
+{% block results %}
+    
+    <div class = "row">
+        <label for = "pos">most positive</label>
+        <div class = div_table>
+            <table id = "pos" class = "table table-sm">
+                <tr>
+                    <th scope = "col">
+                        user 
+                    </th>
+                    <th scope = "col">
+                        positivity score
+                    </th>
+                </tr>
+        
+                {% for row in pos_result %}
+                <tr>
+                    <td>
+                        {{row[0]}} 
+                    </td>
+                    <td>
+                        {{row[1]}}
+                    </td>
+                    
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <label for = "neg">most negative</label>
+        <div class = "div_table">
+            <table id = "neg" class = "table table-sm">
+                <tr>
+                    <th>
+                        user 
+                    </th>
+                    <th>
+                        negativity score
+                    </th>
+                </tr>
+                {% for row in neg_result %}
+                <tr>
+                    <td>
+                        {{row[0]}} 
+                    </td>
+                    <td>
+                        {{row[1]}}
+                    </td>
+                    
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+    
+
+{% endblock %}

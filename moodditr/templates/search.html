@@ -3,12 +3,20 @@
 {% block title %}
     search
 {% endblock %}
+{% block title2 %}
+    search
+{% endblock %}
 
 
 {% block main %}
 <form action = "/search" method = "post">
-    <input name = "userinput" id = "userinput" type = "text" autofocus placeholder = "">
-    <button type = "submit">search</button>
+    <div class="input-group mb-3">
+        
+        <input class = "form-control" name = "userinput" id = "userinput" placeholder = "i.e. /r/place, /u/spez" type = "text" autofocus >
+
+    </div>
+    
+    <button class = "btn btn-outline-dark custom"type = "submit">search</button>
 </form>
-<p>(i.e. /r/place or /u/unidan</p>
+
 {% endblock %}

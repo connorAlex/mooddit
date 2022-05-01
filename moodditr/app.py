@@ -30,24 +30,60 @@ def create_app(test_config=None):
         pass
 
    
+    @app.route('/users', methods = ['GET','POST'])
+    def users():
+        con = sqlite3.connect('mooddit.db')
+        db = con.cursor()
+        
+        pos_result = ()
+        neg_result = ()
 
+        # Select top comments by pos
+        pos_query = "SELECT name, pos FROM user ORDER BY pos DESC limit 5"
+
+        # Select top comments by neg\
+        neg_query = "SELECT name, neg FROM user ORDER BY neg DESC limit 5"
+
+        db.execute(pos_query)
+        result = db.fetchall()
+        pos_result = result
+        
+        db.execute(neg_query)
+        result = db.fetchall()
+        neg_result = result
+        
+        db.close()
+        return render_template('users.html', pos_result = pos_result, neg_result = neg_result)
+    
+    @app.route('/subreddits', methods = ['GET','POST'])
+    def subreddits():
+        con = sqlite3.connect('mooddit.db')
+        db = con.cursor()
+
+        pos_result = ()
+        neg_result = ()
+
+        # Select top comments by pos
+        pos_query = "SELECT name, pos FROM subreddit ORDER BY pos DESC limit 4"
+
+        # Select top comments by neg\
+        neg_query = "SELECT name, neg FROM subreddit ORDER BY neg DESC limit 4"
+
+        db.execute(pos_query)
+        result = db.fetchall()
+        pos_result = result
+        
+        db.execute(neg_query)
+        result = db.fetchall()
+        neg_result = result
+
+        db.close
+        return render_template('subreddits.html', pos_result = pos_result, neg_result = neg_result)
 
     @app.route('/', methods = ["GET","POST"])
     def index():
-        
-        if request.method == "POST":
-            # get what page we're going to 
-            link = request.form.get("button")
 
-            # send user to button's corresponding page
-            if link == "search":
-                return render_template("search.html")
-            elif link == "users":
-                return render_template("users.html")
-            elif link == "subreddits":
-                return render_template("subreddit.html")
-
-        return render_template("home.html")
+            return render_template("home.html")
     
     @app.route('/search', methods = ['GET', 'POST'])
     def search():
@@ -55,6 +91,7 @@ def create_app(test_config=None):
         # Create sqlite3 database
         con = sqlite3.connect('mooddit.db')
         db = con.cursor()
+        
 
         #Set up POST actions
         if request.method == "POST":
@@ -106,7 +143,9 @@ def create_app(test_config=None):
             #return results and display the reddit data
             return render_template("results.html", data = data)
         else:
-            return redirect('results.html')
+            return render_template('search.html')
+        
+        
     
     return app
 
