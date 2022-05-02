@@ -39,10 +39,10 @@ def create_app(test_config=None):
         neg_result = ()
 
         # Select top comments by pos
-        pos_query = "SELECT name, pos FROM user ORDER BY pos DESC limit 5"
+        pos_query = "SELECT name, compound FROM user ORDER BY compound DESC limit 5"
 
         # Select top comments by neg\
-        neg_query = "SELECT name, neg FROM user ORDER BY neg DESC limit 5"
+        neg_query = "SELECT name, compound FROM user ORDER BY compound ASC limit 5"
 
         db.execute(pos_query)
         result = db.fetchall()
@@ -64,10 +64,10 @@ def create_app(test_config=None):
         neg_result = ()
 
         # Select top comments by pos
-        pos_query = "SELECT name, pos FROM subreddit ORDER BY pos DESC limit 4"
+        pos_query = "SELECT name, compound FROM subreddit ORDER BY compound DESC limit 4"
 
         # Select top comments by neg\
-        neg_query = "SELECT name, neg FROM subreddit ORDER BY neg DESC limit 4"
+        neg_query = "SELECT name, compound FROM subreddit ORDER BY compound ASC limit 4"
 
         db.execute(pos_query)
         result = db.fetchall()
@@ -107,7 +107,8 @@ def create_app(test_config=None):
             elif inp_type == '/r/':
                 inp_type = 'subreddit'
             else:
-                return "Error: Search Term Incorrect"
+                msg = "include /u/ or /r/"
+                return render_template("search.html", msg = msg)
             
             # Check to see if there's already sentiment data stored in the database. 
             # It will return much faster than using the reddit api
@@ -123,12 +124,48 @@ def create_app(test_config=None):
                     'neg':result[0][2],
                     'compound':result[0][3]
                 }
+                # Evaluate user message. Better implementation somehow?
+                eval = ""
+                x = result[0][3]
+                if x <= .05 and x >= -.05:
+                    eval = "Neutral"
+                elif x > .05 and x < .25:
+                    eval = "Somewhat Positive"
+                elif x > .25:
+                    eval = "Extemely Positive"
+                elif x > -.25 and x < -.05:
+                    eval = "Somewhat Negative"
+                elif x < -.25:
+                    eval = "Extremely Negative"
 
                 #end the function right here if we have a result from the db
-                return render_template("results.html", data = data)
+                return render_template("results.html", data = data, eval = eval, inp_type = inp_type, inp_value = inp_value)
 
             # call lookup function to get reddit sentiment data
             data = reddit_lookup(inp_value, inp_type)
+        
+            if "404" in data:
+                msg = ""
+                if "user" in data:
+                    msg = "user not found"
+                elif "subreddit" in data:
+                    msg = "subreddit not found"
+                return render_template("search.html", msg = msg)
+
+            # Evaluate user message. Better implementation somehow?
+            eval = ""
+            x = data['compound']
+            if x <= .05 and x >= -.05:
+                eval = "Neutral"
+            elif x > .05 and x < .2:
+                eval = "Somewhat Positive"
+            elif x > .2:
+                eval = "Extemely Positive"
+            elif x > -.2 and x < -.05:
+                eval = "Somewhat Negative"
+            elif x < -.2:
+                eval = "Extremely Negative"
+
             
             #insert lookup data into the database
             query = f"INSERT INTO {inp_type} (name, pos, neg, neu, compound, date_added) VALUES ('{inp_value}',{data['pos']},{data['neg']},{data['neu']}, {data['compound']},'{datetime.datetime.now()}')"    
@@ -141,7 +178,7 @@ def create_app(test_config=None):
             db.close()
 
             #return results and display the reddit data
-            return render_template("results.html", data = data)
+            return render_template("results.html", data = data, eval = eval, inp_type = inp_type, inp_value = inp_value)
         else:
             return render_template('search.html')
         

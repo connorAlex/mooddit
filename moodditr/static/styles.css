@@ -25,3 +25,24 @@ label {
     margin-bottom: 10px;
     border-radius: 5px;
 }
+.homelink{
+    text-decoration: inherit;
+    color: inherit;
+    display:inline !important;
+    margin-right: 5%;
+    margin-bottom: 15%;
+}
+.homelink:hover{
+    text-decoration: underline;
+    color: inherit;
+
+}
+.disabled{
+    opacity: .6;
+    cursor: not-allowed;
+    text-decoration: none;
+    
+}
+footer{
+    font-size: 70%;
+}

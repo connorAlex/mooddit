@@ -11,11 +11,17 @@ def reddit_lookup(input, type):
     text = []
     # determine what search to conduct
     if type == "subreddit":
-        text = get_subreddit(input)
-        
-    elif type == "user":
-        text = get_user(input)
+        try:
+            text = get_subreddit(input)
+        except:
+            return "404: subreddit Not Found"
 
+    elif type == "user":
+        try:
+            text = get_user(input)
+        except:
+            return "404: user Not Found"
+    
     # get sentiment of data
     return get_sentiment(text)
 

@@ -4,21 +4,10 @@
     results
 {% endblock %}
 
+
 {% block results %}
-<ol>
-    <li>
-        Overall: {{data['compound']}}
-    </li>
-    <li>
-        Positive: {{data['pos']}}
-    </li>
-    <li>
-        Neutral: {{data['neu']}}
-    </li>
-    <li>
-        Negative: {{data['neg']}}
-    </li>
-</ol>
+<p>{{inp_value}} is {{eval}}</p>
+<p>this {{inp_type}}'s compound score is {{data['compound']}}</p>
 
 
 {% endblock %}

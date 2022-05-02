@@ -12,13 +12,5 @@ The website will display rankings of positive / negative communities. If a user 
 4.  Store API call results in SQL Database for more optimized presentation.
 5.  Present to user most positive / negative communities that have been evaluated.
 
-### Technical Methodology
-
-
-
-#### Web Layer
-
-#### SQL
-
 
 

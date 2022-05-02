@@ -3,15 +3,35 @@
 {% block title %}
     home
 {% endblock %}
-
+{% block title2 %}
+    home
+{% endblock %}
 {% block main %}
 
-<form method = "post">
-    <a class="btn btn-outline-dark custom" href = "search" >search</a>
-    <br>
-    <a class="btn btn-outline-dark custom" href = "users" >see users</a>
-    <br>
-    <a class="btn btn-outline-dark custom" href = "subreddits" >see subreddits</a>
-</form>
+<p style = "margin-top: 15px;">
+    mooddit calculates sentiment by using VADER Sentiment Analysis. VADER utlizies social media datasets to calculate sentiment into a compound score.
+    Scores can range from -1 to 1 (extremely negative to extremely positive). User and subreddit scores have been divided into 4 categories:
+    <ul>
+        <li>
+            Extremely Negative / Positive
+        </li>
+        <li>
+            Moderately Negative / Positive
+        </li>
+        <li>
+            Somewhat Negative / Positive
+        </li>
+        <li>
+            Neutral
+        </li>
+    </ul>
+    <p>
+        Each user's entire comment history is calculated for the scoring. Subreddits are scanned by calculating all comments for the top 25 posts of the current month. 
+    </p>
+</p>
+<footer>
+        
+    Hutto, C.J. & Gilbert, E.E. (2014). VADER: A Parsimonious Rule-based Model for Sentiment Analysis of Social Media Text. Eighth International Conference on Weblogs and Social Media (ICWSM-14). Ann Arbor, MI, June 2014.
+</footer>
 
 {% endblock %}
